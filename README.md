@@ -1,6 +1,6 @@
 [![N|Solid](http://i68.tinypic.com/a1ohky.png)](https://linuxhelps.net)
 
-<b>Aceproxy installer for Ubuntu</b>
+<b>AceProxy installer for Ubuntu</b>
 
  This script will work on Ubuntu and probably other distros
  of the same families, although no support is offered for them. It isn't
