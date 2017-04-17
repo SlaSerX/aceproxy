@@ -1,0 +1,91 @@
+#!/bin/bash
+
+# Aceproxy installer for Ubuntu
+
+# This script will work on Ubuntu and probably other distros
+# of the same families, although no support is offered for them. It isn't
+# bulletproof but it will probably work if you simply want to setup a AceProxy on
+# your Ubuntu box. It has been designed to be as unobtrusive and
+# universal as possible.
+
+# This is a free shell script under GNU GPL version 3.0 or above
+# Copyright (C) 2017 LinuxHelps project.
+# Feedback/comment/suggestions : https://linuxhelps.net/
+# Author Ivan Bachvarov a.k.a SlaSerX
+
+# Color schema
+
+red='\033[01;31m'
+blue='\033[01;34m'
+green='\033[01;32m'
+norm='\033[00m'
+
+# Settings
+
+source="http://linuxhelps.net/tv/aceproxy"
+
+# Download and Install the Latest Updates for the OS
+
+apt-get update > /dev/null
+apt-get install -y software-properties-common
+sleep 1
+
+# Set the Server Timezone to CST
+echo "Europe/Sofia" > /etc/timezone
+dpkg-reconfigure -f noninteractive tzdata
+
+# Install Necessary services & packets
+
+apt-get install -y wget mc nano
+
+mkdir /root/tv
+cd /root/tv
+wget $source/libgnutls-deb0-28_3.3.15-5ubuntu2_amd64.deb
+sleep 1
+wget $source/acestream-engine_3.0.5.1-0.2_amd64.deb
+sleep 1
+
+apt-get install -y gdebi
+sleep 1
+gdebi --non-interactive libgnutls-deb0-28_3.3.15-5ubuntu2_amd64.deb
+gdebi --non-interactive acestream-engine_3.0.5.1-0.2_amd64.deb
+sleep 1
+
+# Add Repository
+
+add-apt-repository -y ppa:videolan/stable-daily
+sleep 1
+apt-add-repository -y ppa:aap/vdr-testing
+sleep 1
+apt-get -y update
+
+# Install Necessary services & packets
+apt-get -y update
+sleep 1
+apt-get install -y vlc-nox python-gevent unzip ca-certificates supervisor
+sleep 1
+apt-get install -y python-setuptools python-pip python-dev build-essential
+sleep 1
+pip install greenlet gevent psutil
+sleep 1
+apt-get install -y aceproxy 
+sleep 1
+
+mkdir /home/tv
+cd /home/tv
+wget https://github.com/AndreyPavlenko/aceproxy/archive/master.zip
+sleep 1
+unzip master.zip
+sleep 1
+
+# Download configs
+cd /etc/supervisor/conf.d/
+wget $source/supervisord.conf
+
+# Auto start script
+systemctl enable supervisor
+sleep 1
+systemctl start supervisor
+
+echo -e "\n${green}Necessary services & packets Installed\n\n${norm}\n"
+echo -e "\n${green}AceProxy Installed\n"
