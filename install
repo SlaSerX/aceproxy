@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Aceproxy installer for Ubuntu
+# Aceproxy installer for Ubuntu or Debian
 
 # This script will work on Ubuntu and probably other distros
 # of the same families, although no support is offered for them. It isn't
